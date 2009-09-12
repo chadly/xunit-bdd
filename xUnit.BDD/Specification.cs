@@ -10,11 +10,6 @@ namespace Xunit.Extensions
 		/// <summary>
 		/// Performs the action to observe the outcome of to validate the specification.
 		/// </summary>
-		protected abstract void Observe();
-
-		void ISpecification.Observe()
-		{
-			this.Observe();
-		}
+		public abstract void Observe();
 	}
 }
