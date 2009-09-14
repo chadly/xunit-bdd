@@ -86,6 +86,29 @@ namespace Xunit.Extensions
             Assert.IsType(expectedType, @object);
         }
 
+		/// <summary>
+		/// Verifies that an object is the given type or a derived type.
+		/// </summary>
+		/// <typeparam name="T">The type the object should be</typeparam>
+		/// <param name="object">The object to be evaluated</param>
+		/// <returns>The object, casted to type T when successful</returns>
+		/// <exception cref="Xunit.Sdk.IsAssignableFromException">Thrown when the object is not assignable from the given type</exception>
+		public static T ShouldBeAssignableFrom<T>(this object @object)
+		{
+			return Assert.IsAssignableFrom<T>(@object);
+		}
+
+		/// <summary>
+		/// Verifies that an object is the given type or a derived type.
+		/// </summary>
+		/// <param name="object">The object to be evaluated</param>
+		/// <param name="expectedType">The type the object should be</param>
+		/// <exception cref="Xunit.Sdk.IsAssignableFromException">Thrown when the object is not assignable from the given type</exception>
+		public static void ShouldBeAssignableFrom(this object @object, Type expectedType)
+		{
+			Assert.IsAssignableFrom(expectedType, @object);
+		}
+
         /// <summary>
         /// Verifies that two objects are equal, using a default comparer.
         /// </summary>
