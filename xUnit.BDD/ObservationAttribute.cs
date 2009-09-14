@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Xunit.Sdk;
 
 namespace Xunit.Extensions
@@ -11,12 +10,18 @@ namespace Xunit.Extensions
 	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
 	public class ObservationAttribute : FactAttribute
 	{
-		protected override IEnumerable<ITestCommand> EnumerateTestCommands(MethodInfo method)
+		protected override IEnumerable<ITestCommand> EnumerateTestCommands(IMethodInfo method)
 		{
-			foreach (ITestCommand command in base.EnumerateTestCommands(method))
+			foreach (ITestCommand command in EnumerateTestCommandsInternal(method))
 			{
 				yield return new ObservationCommand(command);
 			}
+		}
+
+		private IEnumerable<ITestCommand> EnumerateTestCommandsInternal(IMethodInfo method)
+		{
+			//this extra method is to avoid compiler warning
+			return base.EnumerateTestCommands(method);
 		}
 	}
 }
