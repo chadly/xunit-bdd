@@ -13,6 +13,11 @@ namespace Xunit.Extensions
 			_innerCommand = innerCommand;
 		}
 
+		public int Timeout
+		{
+			get { return _innerCommand.Timeout; }
+		}
+
 		public MethodResult Execute(object testClass)
 		{
 			// for specifications, we perform the observation before executing the test method

@@ -43,7 +43,7 @@ namespace Xunit.Extensions
         /// <exception cref="ContainsException">Thrown when the object is not present in the collection</exception>
         public static void ShouldContain<T>(this IEnumerable<T> collection,
                                             T expected,
-                                            IComparer<T> comparer)
+                                            IEqualityComparer<T> comparer)
         {
             Assert.Contains(expected, collection, comparer);
         }
@@ -82,7 +82,7 @@ namespace Xunit.Extensions
         /// <exception cref="DoesNotContainException">Thrown when the object is present inside the container</exception>
         public static void ShouldNotContain<T>(this IEnumerable<T> collection,
                                                T expected,
-                                               IComparer<T> comparer)
+                                               IEqualityComparer<T> comparer)
         {
             Assert.DoesNotContain(expected, collection, comparer);
         }

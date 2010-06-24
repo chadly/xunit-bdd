@@ -132,7 +132,7 @@ namespace Xunit.Extensions
         /// <exception cref="EqualException">Thrown when the objects are not equal</exception>
         public static void ShouldEqual<T>(this T actual,
                                           T expected,
-                                          IComparer<T> comparer)
+                                          IEqualityComparer<T> comparer)
         {
             Assert.Equal(expected, actual, comparer);
         }
@@ -237,7 +237,7 @@ namespace Xunit.Extensions
         /// <exception cref="NotEqualException">Thrown when the objects are equal</exception>
         public static void ShouldNotEqual<T>(this T actual,
                                              T expected,
-                                             IComparer<T> comparer)
+                                             IEqualityComparer<T> comparer)
         {
             Assert.NotEqual(expected, actual, comparer);
         }
