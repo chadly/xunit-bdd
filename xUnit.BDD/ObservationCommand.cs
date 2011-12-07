@@ -23,7 +23,16 @@ namespace Xunit.Extensions
 			// for specifications, we perform the observation before executing the test method
 			var spec = testClass as ISpecification;
 			if (spec != null)
-				spec.Observe();
+			{
+				try
+				{
+					spec.Observe();
+				}
+				catch (Exception ex)
+				{
+					spec.SetException(ex);
+				}
+			}
 
 			return _innerCommand.Execute(testClass);
 		}
