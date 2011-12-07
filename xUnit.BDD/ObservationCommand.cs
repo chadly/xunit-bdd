@@ -30,6 +30,9 @@ namespace Xunit.Extensions
 				}
 				catch (Exception ex)
 				{
+					if (spec.ExceptionMode == ExceptionHandlingMode.Throw)
+						throw;
+
 					spec.SetException(ex);
 				}
 			}

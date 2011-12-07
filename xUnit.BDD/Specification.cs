@@ -7,7 +7,13 @@ namespace Xunit.Extensions
 	/// </summary>
 	public abstract class Specification : ISpecification
 	{
+		readonly ExceptionHandlingMode exceptionMode;
 		Exception exception;
+
+		public ExceptionHandlingMode ExceptionMode
+		{
+			get { return exceptionMode; }
+		}
 
 		/// <summary>
 		/// The exception that was thrown when Observe was run; null if no exception was thrown.
@@ -15,6 +21,14 @@ namespace Xunit.Extensions
 		protected Exception ThrownException
 		{
 			get { return exception; }
+		}
+
+		public Specification()
+			: this(ExceptionHandlingMode.Throw) { }
+
+		public Specification(ExceptionHandlingMode exceptionMode)
+		{
+			this.exceptionMode = exceptionMode;
 		}
 
 		/// <summary>

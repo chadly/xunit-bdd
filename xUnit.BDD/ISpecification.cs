@@ -7,6 +7,8 @@ namespace Xunit.Extensions
 	/// </summary>
 	public interface ISpecification
 	{
+		ExceptionHandlingMode ExceptionMode { get; }
+
 		/// <summary>
 		/// Performs the action to observe the outcome of to validate the specification.
 		/// </summary>
