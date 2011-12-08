@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 
 namespace Xunit.Extensions
 {
@@ -7,13 +10,7 @@ namespace Xunit.Extensions
 	/// </summary>
 	public abstract class Specification : ISpecification
 	{
-		readonly ExceptionHandlingMode exceptionMode;
 		Exception exception;
-
-		public ExceptionHandlingMode ExceptionMode
-		{
-			get { return exceptionMode; }
-		}
 
 		/// <summary>
 		/// The exception that was thrown when Observe was run; null if no exception was thrown.
@@ -23,22 +20,51 @@ namespace Xunit.Extensions
 			get { return exception; }
 		}
 
-		public Specification()
-			: this(ExceptionHandlingMode.Throw) { }
-
-		public Specification(ExceptionHandlingMode exceptionMode)
-		{
-			this.exceptionMode = exceptionMode;
-		}
-
 		/// <summary>
 		/// Performs the action to observe the outcome of to validate the specification.
 		/// </summary>
 		public abstract void Observe();
 
-		void ISpecification.SetException(Exception ex)
+		bool ISpecification.HandleException(Exception ex)
 		{
 			exception = ex;
+			return ShouldHandleException();
+		}
+
+		static readonly ReaderWriterLockSlim sync = new ReaderWriterLockSlim();
+		static readonly Dictionary<Type, bool> typeCache = new Dictionary<Type, bool>();
+
+		bool ShouldHandleException()
+		{
+			Type type = GetType();
+
+			try
+			{
+				sync.EnterReadLock();
+
+				if (typeCache.ContainsKey(type))
+					return typeCache[type];
+			}
+			finally
+			{
+				sync.ExitReadLock();
+			}
+
+			try
+			{
+				sync.EnterWriteLock();
+
+				if (typeCache.ContainsKey(type))
+					return typeCache[type];
+
+				var attrs = type.GetCustomAttributes(typeof(HandleExceptionsAttribute), true).OfType<HandleExceptionsAttribute>();
+
+				return typeCache[type] = attrs.Any();
+			}
+			finally
+			{
+				sync.ExitWriteLock();
+			}
 		}
 	}
 }

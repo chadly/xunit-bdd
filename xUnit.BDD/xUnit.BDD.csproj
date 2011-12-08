@@ -55,7 +55,7 @@
     <Compile Include="BooleanAssertionExtensions.cs" />
     <Compile Include="CollectionAssertionExtensions.cs" />
     <Compile Include="DateTimeAssertionExtensions.cs" />
-    <Compile Include="ExceptionHandlingMode.cs" />
+    <Compile Include="HandleExceptionsAttribute.cs" />
     <Compile Include="MethodThatThrows.cs" />
     <Compile Include="ObjectAssertExtensions.cs" />
     <Compile Include="ObservationAttribute.cs" />
