@@ -8,6 +8,12 @@ namespace Xunit.Extensions
 	{
 		private readonly ITestCommand _innerCommand;
 
+		public static event EventHandler Observing;
+		public static event EventHandler Observed;
+
+		public static event EventHandler Executing;
+		public static event EventHandler Executed;
+
 		public ObservationCommand(ITestCommand innerCommand)
 		{
 			_innerCommand = innerCommand;
@@ -24,6 +30,7 @@ namespace Xunit.Extensions
 			var spec = testClass as ISpecification;
 			if (spec != null)
 			{
+				OnObserving();
 				try
 				{
 					spec.Observe();
@@ -33,9 +40,38 @@ namespace Xunit.Extensions
 					if (!spec.HandleException(ex))
 						throw;
 				}
+				OnObserved();
 			}
 
-			return _innerCommand.Execute(testClass);
+			OnExecuting();
+			MethodResult result = _innerCommand.Execute(testClass);
+			OnExecuted();
+
+			return result;
+		}
+
+		private void OnObserving()
+		{
+			if (Observing != null)
+				Observing(this, EventArgs.Empty);
+		}
+
+		private void OnObserved()
+		{
+			if (Observed != null)
+				Observed(this, EventArgs.Empty);
+		}
+
+		private void OnExecuting()
+		{
+			if (Executing != null)
+				Executing(this, EventArgs.Empty);
+		}
+
+		private void OnExecuted()
+		{
+			if (Executed != null)
+				Executed(this, EventArgs.Empty);
 		}
 
 		public bool ShouldCreateInstance
