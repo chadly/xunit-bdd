@@ -4,4 +4,4 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("xUnit BDD Extensions")]
 [assembly: ComVisible(false)]
-[assembly: AssemblyVersion("1.6.0.0")]
+[assembly: AssemblyVersion("1.9.1.0")]
