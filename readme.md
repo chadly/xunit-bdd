@@ -7,3 +7,5 @@ Some of the design goals include:
  * Don't force me to inherit from any base class to get BDD style tests working.There is an interface `ISpecification` with one method `Observe()` to accomplish this.  A `Specification` base class is also provided for convenience.
 
 See here for a [full introduction](http://chadly.net/2009/04/bdd-with-xunit-net/)
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/chadly/xunit-bdd-extensions/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
