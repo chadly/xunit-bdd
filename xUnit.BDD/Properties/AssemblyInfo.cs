@@ -6,4 +6,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Extends xUnit.Net with Behavior Driven Development style fixtures.")]
 
 [assembly: ComVisible(false)]
-[assembly: AssemblyVersion("1.9.1.1")]
+[assembly: AssemblyVersion("1.9.2.0")]
