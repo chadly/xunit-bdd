@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 
 namespace Xunit.Extensions
@@ -57,7 +58,7 @@ namespace Xunit.Extensions
 				if (typeCache.ContainsKey(type))
 					return typeCache[type];
 
-				var attrs = type.GetCustomAttributes(typeof(HandleExceptionsAttribute), true).OfType<HandleExceptionsAttribute>();
+				var attrs = type.GetTypeInfo().GetCustomAttributes(typeof(HandleExceptionsAttribute), true).OfType<HandleExceptionsAttribute>();
 
 				return typeCache[type] = attrs.Any();
 			}
