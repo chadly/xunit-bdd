@@ -10,7 +10,7 @@ namespace Xunit.Extensions
 	/// <summary>
 	/// The base specification class
 	/// </summary>
-	public abstract class Specification : ISpecification
+	public abstract class Specification : IAsyncLifetime
 	{
 		private Exception exception;
 
@@ -22,9 +22,9 @@ namespace Xunit.Extensions
 		/// <summary>
 		/// Performs the action to observe the outcome of to validate the specification.
 		/// </summary>
-		public abstract void Observe();
+		protected abstract void Observe();
 
-		bool ISpecification.HandleException(Exception ex)
+		private bool HandleException(Exception ex)
 		{
 			exception = ex;
 			return ShouldHandleException();
@@ -68,7 +68,15 @@ namespace Xunit.Extensions
 
 		public Task InitializeAsync()
 		{
-			Observe();
+			try
+			{
+				Observe();
+			}
+			catch (Exception ex)
+			{
+				if (!HandleException(ex))
+					throw;
+			}
 			return CommonTasks.Completed;
 		}
 
