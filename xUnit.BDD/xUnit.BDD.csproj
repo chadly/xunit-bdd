@@ -21,4 +21,8 @@
     <PackageReference Include="xunit.extensibility.core" Version="2.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
 </Project>
