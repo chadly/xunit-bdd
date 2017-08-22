@@ -11,7 +11,7 @@
     <AssemblyName>xUnit.BDD</AssemblyName>
     <NeutralLanguage />
     <PackageProjectUrl>https://github.com/chadly/xUnit-BDD-Extensions</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/chadly/xUnit-BDD-Extensions/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageLicenseUrl>https://github.com/chadly/xUnit-BDD-Extensions/blob/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
   <ItemGroup>
