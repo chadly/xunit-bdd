@@ -1,8 +1,6 @@
 using System;
-using Xunit;
-using Xunit.Extensions;
 
-namespace Test.xUnit.BDD
+namespace Xunit.Extensions.Test
 {
 	public class behaves_like_a_specification : Specification
 	{

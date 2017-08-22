@@ -3,11 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "xUnit.BDD", "xUnit.BDD\xUnit.BDD.csproj", "{603ABF5C-858F-46E5-A3C0-FE9BCE13D9CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bdd", "src\bdd.csproj", "{603ABF5C-858F-46E5-A3C0-FE9BCE13D9CD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{AAE2E29F-CFBF-4D9F-AF64-7523767F116F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.xUnit.BDD", "Test.xUnit.BDD\Test.xUnit.BDD.csproj", "{DB76DD39-E0F0-4CB3-84A6-80B8FD344A2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "test", "test\test.csproj", "{DB76DD39-E0F0-4CB3-84A6-80B8FD344A2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,9 +24,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{DB76DD39-E0F0-4CB3-84A6-80B8FD344A2C} = {AAE2E29F-CFBF-4D9F-AF64-7523767F116F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1B47DEA8-8AE1-4D31-9738-2F58753C2C0F}
