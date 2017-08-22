@@ -10,7 +10,7 @@
     <Description>Extends xUnit.Net with Behavior Driven Development style fixtures.</Description>
     <Product>xUnit.BDD</Product>
     <PackageId>xUnit.BDD</PackageId>
-    <AssemblyName>xUnit BDD Extensions</AssemblyName>
+    <AssemblyName>xUnit.BDD</AssemblyName>
     <NeutralLanguage />
     <PackageProjectUrl>https://github.com/chadly/xUnit-BDD-Extensions</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/chadly/xUnit-BDD-Extensions/blob/master/LICENSE.txt</PackageLicenseUrl>
