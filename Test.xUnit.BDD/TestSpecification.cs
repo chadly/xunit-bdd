@@ -6,17 +6,49 @@ namespace Test.xUnit.BDD
 {
 	public class behaves_like_a_specification : Specification
 	{
-		protected bool observedInBase = false;
+		private bool beforeObserveCalled = false;
+		private bool wasObservedAtBeforeObserve = true;
+
+		private bool observedInBase = false;
+
+		private bool afterObserveCalled = false;
+		private bool wasObservedAtAfterObserve = false;
+
+		protected override void BeforeObserve()
+		{
+			beforeObserveCalled = true;
+			wasObservedAtBeforeObserve = observedInBase;
+		}
 
 		protected override void Observe()
 		{
 			observedInBase = true;
 		}
 
+		protected override void AfterObserve()
+		{
+			afterObserveCalled = true;
+			wasObservedAtAfterObserve = observedInBase;
+		}
+
 		[Observation]
 		public void should_call_base_observe()
 		{
 			observedInBase.ShouldBeTrue("Observe should be called in the base class");
+		}
+
+		[Observation]
+		public void should_call_beforeobserve_before_observing()
+		{
+			beforeObserveCalled.ShouldBeTrue("BeforeObserve should have been called");
+			wasObservedAtBeforeObserve.ShouldBeFalse("BeforeObserve should have been called before Observe");
+		}
+
+		[Observation]
+		public void should_call_afterobserve_after_observing()
+		{
+			afterObserveCalled.ShouldBeTrue("AfterObserve should have been called");
+			wasObservedAtAfterObserve.ShouldBeTrue("AfterObserve should have been called after Observe");
 		}
 	}
 
@@ -62,7 +94,7 @@ namespace Test.xUnit.BDD
 			throw new TestException();
 		}
 
-		[Observation]
+		[Observation(Skip = "This test should fail")]
 		public void should_fail()
 		{
 			// This test will fail because of the exception thrown in Observe().

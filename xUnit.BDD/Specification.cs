@@ -24,6 +24,9 @@ namespace Xunit.Extensions
 		/// </summary>
 		protected abstract void Observe();
 
+		protected virtual void BeforeObserve() { }
+		protected virtual void AfterObserve() { }
+
 		private bool HandleException(Exception ex)
 		{
 			exception = ex;
@@ -70,7 +73,9 @@ namespace Xunit.Extensions
 		{
 			try
 			{
+				BeforeObserve();
 				Observe();
+				AfterObserve();
 			}
 			catch (Exception ex)
 			{
