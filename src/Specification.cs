@@ -12,7 +12,9 @@ namespace Xunit.Extensions
 	/// </summary>
 	public abstract class Specification : IAsyncLifetime
 	{
-		private Exception exception;
+		Exception exception;
+		static readonly ReaderWriterLockSlim sync = new ReaderWriterLockSlim();
+		static readonly Dictionary<Type, bool> typeCache = new Dictionary<Type, bool>();
 
 		/// <summary>
 		/// The exception that was thrown when Observe was run; null if no exception was thrown.
@@ -20,21 +22,43 @@ namespace Xunit.Extensions
 		protected Exception ThrownException => exception;
 
 		/// <summary>
+		/// Initialize the test class all async-like.
+		/// </summary>
+		protected virtual Task InitializeAsync() => CommonTasks.Completed;
+
+		/// <summary>
 		/// Performs the action to observe the outcome of to validate the specification.
 		/// </summary>
-		protected abstract void Observe();
+		protected abstract Task Observe();
 
-		protected virtual void BeforeObserve() { }
-		protected virtual void AfterObserve() { }
+		/// <summary>
+		/// Cleanup the test class all async-like.
+		/// </summary>
+		protected virtual Task DisposeAsync() => CommonTasks.Completed;
 
-		private bool HandleException(Exception ex)
+		async Task IAsyncLifetime.InitializeAsync()
+		{
+			try
+			{
+				await Observe();
+			}
+			catch (Exception ex)
+			{
+				if (!HandleException(ex))
+					throw;
+			}
+		}
+
+		Task IAsyncLifetime.DisposeAsync()
+		{
+			return DisposeAsync();
+		}
+
+		bool HandleException(Exception ex)
 		{
 			exception = ex;
 			return ShouldHandleException();
 		}
-
-		private static readonly ReaderWriterLockSlim sync = new ReaderWriterLockSlim();
-		private static readonly Dictionary<Type, bool> typeCache = new Dictionary<Type, bool>();
 
 		bool ShouldHandleException()
 		{
@@ -67,27 +91,6 @@ namespace Xunit.Extensions
 			{
 				sync.ExitWriteLock();
 			}
-		}
-
-		public Task InitializeAsync()
-		{
-			try
-			{
-				BeforeObserve();
-				Observe();
-				AfterObserve();
-			}
-			catch (Exception ex)
-			{
-				if (!HandleException(ex))
-					throw;
-			}
-			return CommonTasks.Completed;
-		}
-
-		public Task DisposeAsync()
-		{
-			return CommonTasks.Completed;
 		}
 	}
 }

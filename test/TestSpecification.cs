@@ -1,32 +1,16 @@
 using System;
+using System.Threading.Tasks;
 
 namespace Xunit.Extensions.Test
 {
 	public class behaves_like_a_specification : Specification
 	{
-		private bool beforeObserveCalled = false;
-		private bool wasObservedAtBeforeObserve = true;
+		bool observedInBase = false;
 
-		private bool observedInBase = false;
-
-		private bool afterObserveCalled = false;
-		private bool wasObservedAtAfterObserve = false;
-
-		protected override void BeforeObserve()
-		{
-			beforeObserveCalled = true;
-			wasObservedAtBeforeObserve = observedInBase;
-		}
-
-		protected override void Observe()
+		protected override Task Observe()
 		{
 			observedInBase = true;
-		}
-
-		protected override void AfterObserve()
-		{
-			afterObserveCalled = true;
-			wasObservedAtAfterObserve = observedInBase;
+			return Task.CompletedTask;
 		}
 
 		[Observation]
@@ -34,29 +18,15 @@ namespace Xunit.Extensions.Test
 		{
 			observedInBase.ShouldBeTrue("Observe should be called in the base class");
 		}
-
-		[Observation]
-		public void should_call_beforeobserve_before_observing()
-		{
-			beforeObserveCalled.ShouldBeTrue("BeforeObserve should have been called");
-			wasObservedAtBeforeObserve.ShouldBeFalse("BeforeObserve should have been called before Observe");
-		}
-
-		[Observation]
-		public void should_call_afterobserve_after_observing()
-		{
-			afterObserveCalled.ShouldBeTrue("AfterObserve should have been called");
-			wasObservedAtAfterObserve.ShouldBeTrue("AfterObserve should have been called after Observe");
-		}
 	}
 
 	public class behaves_like_a_polymorphic_specification : behaves_like_a_specification
 	{
 		protected bool observedInDerived = false;
 
-		protected override void Observe()
+		protected override async Task Observe()
 		{
-			base.Observe();
+			await base.Observe();
 			observedInDerived = true;
 		}
 
@@ -72,7 +42,7 @@ namespace Xunit.Extensions.Test
 	[HandleExceptions]
 	public class behaves_like_a_specification_that_throws_when_observed : Specification
 	{
-		protected override void Observe()
+		protected override Task Observe()
 		{
 			throw new TestException();
 		}
@@ -87,7 +57,7 @@ namespace Xunit.Extensions.Test
 
 	public class behaves_like_a_specification_that_unexpectedly_throws_when_observed : Specification
 	{
-		protected override void Observe()
+		protected override Task Observe()
 		{
 			throw new TestException();
 		}

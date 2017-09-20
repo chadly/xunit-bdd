@@ -1,6 +1,9 @@
 ﻿using System.Threading.Tasks;
 
-static class CommonTasks
+namespace Xunit.Extensions
 {
-	internal static readonly Task Completed = Task.FromResult(0);
+	static class CommonTasks
+	{
+		public static readonly Task Completed = Task.FromResult(0);
+	}
 }
