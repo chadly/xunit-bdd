@@ -38,6 +38,8 @@ namespace Xunit
 
 		async Task IAsyncLifetime.InitializeAsync()
 		{
+			await InitializeAsync();
+
 			try
 			{
 				await ObserveAsync();
