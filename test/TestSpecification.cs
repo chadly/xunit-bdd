@@ -7,7 +7,7 @@ namespace Xunit.Bdd.Test
 	{
 		bool observedInBase = false;
 
-		protected override Task Observe()
+		protected override Task ObserveAsync()
 		{
 			observedInBase = true;
 			return Task.CompletedTask;
@@ -24,9 +24,9 @@ namespace Xunit.Bdd.Test
 	{
 		protected bool observedInDerived = false;
 
-		protected override async Task Observe()
+		protected override async Task ObserveAsync()
 		{
-			await base.Observe();
+			await base.ObserveAsync();
 			observedInDerived = true;
 		}
 
@@ -42,7 +42,7 @@ namespace Xunit.Bdd.Test
 	[HandleExceptions]
 	public class behaves_like_a_specification_that_throws_when_observed : Specification
 	{
-		protected override Task Observe()
+		protected override Task ObserveAsync()
 		{
 			throw new TestException();
 		}
@@ -57,7 +57,7 @@ namespace Xunit.Bdd.Test
 
 	public class behaves_like_a_specification_that_unexpectedly_throws_when_observed : Specification
 	{
-		protected override Task Observe()
+		protected override Task ObserveAsync()
 		{
 			throw new TestException();
 		}

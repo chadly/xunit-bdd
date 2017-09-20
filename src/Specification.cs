@@ -29,7 +29,7 @@ namespace Xunit
 		/// <summary>
 		/// Performs the action to observe the outcome of to validate the specification.
 		/// </summary>
-		protected abstract Task Observe();
+		protected abstract Task ObserveAsync();
 
 		/// <summary>
 		/// Cleanup the test class all async-like.
@@ -40,7 +40,7 @@ namespace Xunit
 		{
 			try
 			{
-				await Observe();
+				await ObserveAsync();
 			}
 			catch (Exception ex)
 			{
