@@ -5,9 +5,9 @@
 
     <IsPackable>false</IsPackable>
 
-    <AssemblyName>Xunit.Extensions.Test</AssemblyName>
+    <AssemblyName>Xunit.Bdd.Test</AssemblyName>
 
-    <RootNamespace>Xunit.Extensions.Test</RootNamespace>
+    <RootNamespace>Xunit.Bdd.Test</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

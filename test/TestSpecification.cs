@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Xunit.Extensions.Test
+namespace Xunit.Bdd.Test
 {
 	public class behaves_like_a_specification : Specification
 	{

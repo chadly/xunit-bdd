@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Xunit.Sdk;
 
-namespace Xunit.Extensions
+namespace Xunit
 {
 	/// <summary>
 	/// Extensions which provide assertions to classes derived from <see cref="object"/>.

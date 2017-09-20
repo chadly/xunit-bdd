@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Xunit.Extensions
+namespace Xunit
 {
 	[AttributeUsage(AttributeTargets.Class)]
 	public class HandleExceptionsAttribute : Attribute

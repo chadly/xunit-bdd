@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Xunit.Extensions
+namespace Xunit
 {
 	static class CommonTasks
 	{

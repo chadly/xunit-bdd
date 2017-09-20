@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Xunit.Extensions
+namespace Xunit
 {
 	public delegate void MethodThatThrows();
 
