@@ -8,6 +8,8 @@
     <AssemblyName>Xunit.Bdd.Test</AssemblyName>
 
     <RootNamespace>Xunit.Bdd.Test</RootNamespace>
+
+    <Version>3.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
