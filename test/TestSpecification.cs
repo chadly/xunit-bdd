@@ -8,11 +8,13 @@ namespace Xunit.Bdd.Test
 {
 	public class behaves_like_a_specification : Specification
 	{
+		protected static int constructionCount = 0;
+
 		public behaves_like_a_specification()
 		{
-			
+			constructionCount++;
 		}
-
+		
 		private bool beforeObserveCalled = false;
 		private bool wasObservedAtBeforeObserve = true;
 
@@ -58,7 +60,13 @@ namespace Xunit.Bdd.Test
 			wasObservedAtAfterObserve.ShouldBeTrue("AfterObserve should have been called after Observe");
 		}
 
-		[Observation(Skip="Skipped this observation")]
+		[Observation]
+		public void should_be_constructed_either_once_or_twice()
+		{
+			Assert.InRange(constructionCount, 1, 2);
+		}
+
+		[Observation(Skip = "Skipped this observation")]
 		public void should_skip_this_observation()
 		{
 			Assert.True(false);
