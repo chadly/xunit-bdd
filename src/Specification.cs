@@ -81,7 +81,17 @@ namespace Xunit.Extensions
 		internal void OnStart()
 		{
 			BeforeObserve();
-			Observe(); // Misnomer of the century
+
+			try
+			{
+				Observe(); // Misnomer of the century
+			}
+			catch (Exception ex)
+			{
+				if (!HandleException(ex))
+					throw;
+			}
+
 			AfterObserve();
 		}
 	}
