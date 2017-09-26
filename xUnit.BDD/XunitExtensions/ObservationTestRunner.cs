@@ -13,15 +13,8 @@ namespace Xunit.Extensions
         readonly Specification specification;
         readonly ExecutionTimer timer;
         
-        public ObservationTestRunner(Specification specification,
-                                     ITest test,
-                                     IMessageBus messageBus,
-                                     ExecutionTimer timer,
-                                     Type testClass,
-                                     MethodInfo testMethod,
-                                     ExceptionAggregator aggregator,
-                                     CancellationTokenSource cancellationTokenSource)
-            : base(test, messageBus, testClass, null, testMethod, null, null, aggregator, cancellationTokenSource)
+        public ObservationTestRunner(Specification specification, ITest test, IMessageBus messageBus, ExecutionTimer timer, Type testClass, MethodInfo testMethod, string skipReason, ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
+            : base(test, messageBus, testClass, null, testMethod, null, skipReason, aggregator, cancellationTokenSource)
         {
             this.specification = specification;
             this.timer = timer;

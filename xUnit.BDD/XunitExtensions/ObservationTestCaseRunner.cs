@@ -7,18 +7,15 @@ namespace Xunit.Extensions
     public class ObservationTestCaseRunner : TestCaseRunner<ObservationTestCase>
     {
         readonly string displayName;
-        readonly Specification specification;
+	    private readonly string skipReason;
+	    readonly Specification specification;
 
-        public ObservationTestCaseRunner(Specification specification,
-                                         ObservationTestCase testCase,
-                                         string displayName,
-                                         IMessageBus messageBus,
-                                         ExceptionAggregator aggregator,
-                                         CancellationTokenSource cancellationTokenSource)
+        public ObservationTestCaseRunner(Specification specification, ObservationTestCase testCase, string displayName, string skipReason, IMessageBus messageBus, ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
             : base(testCase, messageBus, aggregator, cancellationTokenSource)
         {
             this.specification = specification;
             this.displayName = displayName;
+	        this.skipReason = skipReason;
         }
 
         protected override Task<RunSummary> RunTestAsync()
@@ -28,7 +25,7 @@ namespace Xunit.Extensions
             var TestMethod = TestCase.TestMethod.Method.ToRuntimeMethod();
             var test = new ObservationTest(TestCase, displayName);
 
-            return new ObservationTestRunner(specification, test, MessageBus, timer, TestClass, TestMethod, Aggregator, CancellationTokenSource).RunAsync();
+            return new ObservationTestRunner(specification, test, MessageBus, timer, TestClass, TestMethod, skipReason, Aggregator, CancellationTokenSource).RunAsync();
         }
     }
 }

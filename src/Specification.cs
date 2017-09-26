@@ -5,8 +5,6 @@ using System.Reflection;
 using System.Threading;
 using Xunit;
 
-[assembly: TestFramework("Xunit.Extensions.ObservationTestFramework", "xUnit.BDD")]
-
 namespace Xunit.Extensions
 {
 	/// <summary>
