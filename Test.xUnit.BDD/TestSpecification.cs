@@ -1,0 +1,105 @@
+using System;
+using Xunit;
+using Xunit.Extensions;
+
+[assembly: TestFramework("Xunit.Extensions.ObservationTestFramework", "xUnit.BDD")]
+
+namespace Test.xUnit.BDD
+{
+	public class behaves_like_a_specification : Specification
+	{
+		private bool beforeObserveCalled = false;
+		private bool wasObservedAtBeforeObserve = true;
+
+		private bool observedInBase = false;
+
+		private bool afterObserveCalled = false;
+		private bool wasObservedAtAfterObserve = false;
+
+		protected override void BeforeObserve()
+		{
+			beforeObserveCalled = true;
+			wasObservedAtBeforeObserve = observedInBase;
+		}
+
+		protected override void Observe()
+		{
+			observedInBase = true;
+		}
+
+		protected override void AfterObserve()
+		{
+			afterObserveCalled = true;
+			wasObservedAtAfterObserve = observedInBase;
+		}
+
+		[Observation]
+		public void should_call_base_observe()
+		{
+			observedInBase.ShouldBeTrue("Observe should be called in the base class");
+		}
+
+		[Observation]
+		public void should_call_beforeobserve_before_observing()
+		{
+			beforeObserveCalled.ShouldBeTrue("BeforeObserve should have been called");
+			wasObservedAtBeforeObserve.ShouldBeFalse("BeforeObserve should have been called before Observe");
+		}
+
+		[Observation]
+		public void should_call_afterobserve_after_observing()
+		{
+			afterObserveCalled.ShouldBeTrue("AfterObserve should have been called");
+			wasObservedAtAfterObserve.ShouldBeTrue("AfterObserve should have been called after Observe");
+		}
+	}
+
+	public class behaves_like_a_polymorphic_specification : behaves_like_a_specification
+	{
+		protected bool observedInDerived = false;
+
+		protected override void Observe()
+		{
+			base.Observe();
+			observedInDerived = true;
+		}
+
+		[Observation]
+		public void should_call_derived_observe()
+		{
+			observedInDerived.ShouldBeTrue("Observe should be called in the derived class");
+		}
+	}
+
+	public class TestException : Exception { }
+
+	[HandleExceptions]
+	public class behaves_like_a_specification_that_throws_when_observed : Specification
+	{
+		protected override void Observe()
+		{
+			throw new TestException();
+		}
+
+		[Observation]
+		public void should_handle_exception()
+		{
+			ThrownException.ShouldNotBeNull();
+			ThrownException.ShouldBeType<TestException>();
+		}
+	}
+
+	public class behaves_like_a_specification_that_unexpectedly_throws_when_observed : Specification
+	{
+		protected override void Observe()
+		{
+			throw new TestException();
+		}
+
+		[Observation(Skip = "This test should fail")]
+		public void should_fail()
+		{
+			// This test will fail because of the exception thrown in Observe().
+		}
+	}
+}

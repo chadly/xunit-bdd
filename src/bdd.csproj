@@ -17,6 +17,7 @@
   <ItemGroup>
     <PackageReference Include="xunit.assert" Version="2.2.0" />
     <PackageReference Include="xunit.extensibility.core" Version="2.2.0" />
+    <PackageReference Include="xunit.extensibility.execution" Version="2.2.0" />
   </ItemGroup>
 
 </Project>

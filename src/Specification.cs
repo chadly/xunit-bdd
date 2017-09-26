@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using System.Threading.Tasks;
+using Xunit;
 
-namespace Xunit
+[assembly: TestFramework("Xunit.Extensions.ObservationTestFramework", "xUnit.BDD")]
+
+namespace Xunit.Extensions
 {
 	/// <summary>
 	/// The base specification class
 	/// </summary>
-	public abstract class Specification : IAsyncLifetime
+	public abstract class Specification
 	{
-		Exception exception;
-		static readonly ReaderWriterLockSlim sync = new ReaderWriterLockSlim();
-		static readonly Dictionary<Type, bool> typeCache = new Dictionary<Type, bool>();
+		private Exception exception;
 
 		/// <summary>
 		/// The exception that was thrown when Observe was run; null if no exception was thrown.
@@ -22,45 +22,23 @@ namespace Xunit
 		protected Exception ThrownException => exception;
 
 		/// <summary>
-		/// Initialize the test class all async-like.
+		/// Performs an action, the outcome of which will be observed to validate the specification.
 		/// </summary>
-		protected virtual Task InitializeAsync() => CommonTasks.Completed;
+		protected abstract void Observe();
 
-		/// <summary>
-		/// Performs the action to observe the outcome of to validate the specification.
-		/// </summary>
-		protected abstract Task ObserveAsync();
+		protected virtual void BeforeObserve() { }
+		protected virtual void AfterObserve() { }
 
-		/// <summary>
-		/// Cleanup the test class all async-like.
-		/// </summary>
-		protected virtual Task DisposeAsync() => CommonTasks.Completed;
+		protected virtual void DestroyContext() { }
 
-		async Task IAsyncLifetime.InitializeAsync()
-		{
-			await InitializeAsync();
-
-			try
-			{
-				await ObserveAsync();
-			}
-			catch (Exception ex)
-			{
-				if (!HandleException(ex))
-					throw;
-			}
-		}
-
-		Task IAsyncLifetime.DisposeAsync()
-		{
-			return DisposeAsync();
-		}
-
-		bool HandleException(Exception ex)
+		private bool HandleException(Exception ex)
 		{
 			exception = ex;
 			return ShouldHandleException();
 		}
+
+		private static readonly ReaderWriterLockSlim sync = new ReaderWriterLockSlim();
+		private static readonly Dictionary<Type, bool> typeCache = new Dictionary<Type, bool>();
 
 		bool ShouldHandleException()
 		{
@@ -93,6 +71,18 @@ namespace Xunit
 			{
 				sync.ExitWriteLock();
 			}
+		}
+
+		internal void OnFinish()
+		{
+			DestroyContext();
+		}
+
+		internal void OnStart()
+		{
+			BeforeObserve();
+			Observe(); // Misnomer of the century
+			AfterObserve();
 		}
 	}
 }
