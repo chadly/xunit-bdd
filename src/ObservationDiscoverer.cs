@@ -1,11 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
 namespace Xunit.Extensions
 {
-    public class ObservationDiscoverer : TestFrameworkDiscoverer
+	public class ObservationDiscoverer : TestFrameworkDiscoverer
     {
         readonly CollectionPerClassTestCollectionFactory testCollectionFactory;
 

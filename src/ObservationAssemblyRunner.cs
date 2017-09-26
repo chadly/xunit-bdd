@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit.Abstractions;
@@ -7,7 +6,7 @@ using Xunit.Sdk;
 
 namespace Xunit.Extensions
 {
-    public class ObservationAssemblyRunner : TestAssemblyRunner<ObservationTestCase>
+	public class ObservationAssemblyRunner : TestAssemblyRunner<ObservationTestCase>
     {
         public ObservationAssemblyRunner(ITestAssembly testAssembly,
                                          IEnumerable<ObservationTestCase> testCases,

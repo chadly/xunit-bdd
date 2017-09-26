@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 
-namespace Xunit
+namespace Xunit.Extensions
 {
 	/// <summary>
 	/// The base specification class

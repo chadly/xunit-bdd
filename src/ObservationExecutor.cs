@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
 namespace Xunit.Extensions
 {
-    public class ObservationExecutor : TestFrameworkExecutor<ObservationTestCase>
+	public class ObservationExecutor : TestFrameworkExecutor<ObservationTestCase>
     {
         public ObservationExecutor(AssemblyName assemblyName,
                                    ISourceInformationProvider sourceInformationProvider,

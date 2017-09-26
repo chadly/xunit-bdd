@@ -1,12 +1,18 @@
 using System;
 using Xunit;
+using Xunit.Extensions;
 
-[assembly: TestFramework("Xunit.ObservationTestFramework", "Xunit.Bdd")]
+[assembly: TestFramework("Xunit.Extensions.ObservationTestFramework", "Xunit.Bdd")]
 
 namespace Xunit.Bdd.Test
 {
 	public class behaves_like_a_specification : Specification
 	{
+		public behaves_like_a_specification()
+		{
+			
+		}
+
 		private bool beforeObserveCalled = false;
 		private bool wasObservedAtBeforeObserve = true;
 

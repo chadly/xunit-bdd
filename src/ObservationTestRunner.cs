@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,7 +7,7 @@ using Xunit.Sdk;
 
 namespace Xunit.Extensions
 {
-    public class ObservationTestRunner : TestRunner<ObservationTestCase>
+	public class ObservationTestRunner : TestRunner<ObservationTestCase>
     {
         readonly Specification specification;
         readonly ExecutionTimer timer;
