@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using Xunit;
 
-namespace Xunit.Extensions
+namespace Xunit
 {
 	/// <summary>
 	/// The base specification class
