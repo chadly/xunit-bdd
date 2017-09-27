@@ -8,9 +8,9 @@ namespace Xunit.Extensions
 {
     public class ObservationTestClassRunner : TestClassRunner<ObservationTestCase>
     {
-        readonly Specification specification;
+        readonly ISpecification specification;
 
-        public ObservationTestClassRunner(Specification specification,
+        public ObservationTestClassRunner(ISpecification specification,
                                           ITestClass testClass,
                                           IReflectionTypeInfo @class,
                                           IEnumerable<ObservationTestCase> testCases,

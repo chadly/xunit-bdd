@@ -9,9 +9,9 @@ namespace Xunit.Extensions
 {
     public class ObservationTestInvoker : TestInvoker<ObservationTestCase>
     {
-        private readonly Specification specification;
+        private readonly ISpecification specification;
 
-        public ObservationTestInvoker(Specification specification,
+        public ObservationTestInvoker(ISpecification specification,
                                       ITest test,
                                       IMessageBus messageBus,
                                       Type testClass,

@@ -9,10 +9,10 @@ namespace Xunit.Extensions
 {
 	public class ObservationTestRunner : TestRunner<ObservationTestCase>
     {
-        readonly Specification specification;
+        readonly ISpecification specification;
         readonly ExecutionTimer timer;
         
-        public ObservationTestRunner(Specification specification, ITest test, IMessageBus messageBus, ExecutionTimer timer, Type testClass, MethodInfo testMethod, string skipReason, ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
+        public ObservationTestRunner(ISpecification specification, ITest test, IMessageBus messageBus, ExecutionTimer timer, Type testClass, MethodInfo testMethod, string skipReason, ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
             : base(test, messageBus, testClass, null, testMethod, null, skipReason, aggregator, cancellationTokenSource)
         {
             this.specification = specification;

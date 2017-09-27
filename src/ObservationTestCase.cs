@@ -34,7 +34,7 @@ namespace Xunit.Extensions
 		protected virtual string GetSkipReason(IAttributeInfo observationAttribute)
 		    => observationAttribute.GetNamedArgument<string>("Skip");
 
-		public Task<RunSummary> RunAsync(Specification specification,
+		public Task<RunSummary> RunAsync(ISpecification specification,
                                          IMessageBus messageBus,
                                          ExceptionAggregator aggregator,
                                          CancellationTokenSource cancellationTokenSource)

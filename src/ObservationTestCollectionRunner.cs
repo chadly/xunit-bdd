@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit.Abstractions;
@@ -9,9 +11,11 @@ namespace Xunit.Extensions
 {
     public class ObservationTestCollectionRunner : TestCollectionRunner<ObservationTestCase>
     {
-        readonly static RunSummary FailedSummary = new RunSummary { Total = 1, Failed = 1 };
+	    private static readonly RunSummary FailedSummary = new RunSummary { Total = 1, Failed = 1 };
+	    private static readonly ReaderWriterLockSlim Sync = new ReaderWriterLockSlim();
+	    private static readonly Dictionary<Type, bool> TypeCache = new Dictionary<Type, bool>();
 
-        readonly IMessageSink diagnosticMessageSink;
+		private readonly IMessageSink diagnosticMessageSink;
 
         public ObservationTestCollectionRunner(ITestCollection testCollection,
                                                IEnumerable<ObservationTestCase> testCases,
@@ -30,26 +34,68 @@ namespace Xunit.Extensions
                                                                     IEnumerable<ObservationTestCase> testCases)
         {
             var timer = new ExecutionTimer();
-            var specification = Activator.CreateInstance(testClass.Class.ToRuntimeType()) as Specification;
-            if (specification == null)
+	        var specification = Activator.CreateInstance(testClass.Class.ToRuntimeType()) as ISpecification;
+	        if (specification == null)
             {
-                Aggregator.Add(new InvalidOperationException(String.Format("Test class {0} cannot be static, and must derive from Specification.", testClass.Class.Name)));
+                Aggregator.Add(new InvalidOperationException($"Test class {testClass.Class.Name} cannot be static, and must implement ISpecification."));
                 return FailedSummary;
             }
 
-            Aggregator.Run(specification.OnStart);
+	        void ObserveAndCatchIfSpecified()
+	        {
+		        try
+		        {
+			        specification.Observe();
+		        }
+		        catch (Exception ex)
+		        {
+			        specification.ThrownException = ex;
+			        if (!ShouldHandleException(specification.GetType())) throw;
+		        }
+	        }
+
+	        Aggregator.Run(ObserveAndCatchIfSpecified);
             if (Aggregator.HasExceptions)
                 return FailedSummary;
 
             var result = await new ObservationTestClassRunner(specification, testClass, @class, testCases, diagnosticMessageSink, MessageBus, TestCaseOrderer, new ExceptionAggregator(Aggregator), CancellationTokenSource).RunAsync();
 
-            Aggregator.Run(specification.OnFinish);
-
-            var disposable = specification as IDisposable;
-            if (disposable != null)
+	        if (specification is IDisposable disposable)
                 timer.Aggregate(disposable.Dispose);
 
             return result;
-        }
-    }
+		}
+
+	    private static bool ShouldHandleException(Type type)
+		{
+			try
+			{
+				Sync.EnterReadLock();
+
+				if (TypeCache.ContainsKey(type))
+					return TypeCache[type];
+			}
+			finally
+			{
+				Sync.ExitReadLock();
+			}
+
+			try
+			{
+				Sync.EnterWriteLock();
+
+				if (TypeCache.ContainsKey(type))
+					return TypeCache[type];
+
+				var attrs = type.GetTypeInfo().GetCustomAttributes(typeof(HandleExceptionsAttribute), true).OfType<HandleExceptionsAttribute>();
+
+				return TypeCache[type] = attrs.Any();
+			}
+			finally
+			{
+				Sync.ExitWriteLock();
+			}
+		}
+
+	}
 }

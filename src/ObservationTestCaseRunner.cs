@@ -8,9 +8,9 @@ namespace Xunit.Extensions
     {
         readonly string displayName;
 	    private readonly string skipReason;
-	    readonly Specification specification;
+	    readonly ISpecification specification;
 
-        public ObservationTestCaseRunner(Specification specification, ObservationTestCase testCase, string displayName, string skipReason, IMessageBus messageBus, ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
+        public ObservationTestCaseRunner(ISpecification specification, ObservationTestCase testCase, string displayName, string skipReason, IMessageBus messageBus, ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
             : base(testCase, messageBus, aggregator, cancellationTokenSource)
         {
             this.specification = specification;

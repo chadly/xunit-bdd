@@ -8,9 +8,9 @@ namespace Xunit.Extensions
 {
     public class ObservationTestMethodRunner : TestMethodRunner<ObservationTestCase>
     {
-        readonly Specification specification;
+        readonly ISpecification specification;
 
-        public ObservationTestMethodRunner(Specification specification,
+        public ObservationTestMethodRunner(ISpecification specification,
                                            ITestMethod testMethod,
                                            IReflectionTypeInfo @class,
                                            IReflectionMethodInfo method,
