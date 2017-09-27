@@ -4,7 +4,6 @@ Extends xUnit.Net with Behavior Driven Development style fixtures.
 
 Some of the design goals include:
  * Use natural C# constructs to control things such as BDD contexts and concerns. For example, the context of the specification is defined in the class constructor and the concern for the fixture is defined by its namespace.
- * Async tests are a first class citizen.
 
 See here for a [full introduction](https://www.chadly.net/bdd-with-xunit-net/)
 
@@ -36,7 +35,7 @@ public class when_adding_two_numbers : Specification
 		calc = new Calculator();
 	}
 
-	protected override Task ObserveAsync()
+	protected override void Observe()
 	{
 		result = calc.Add(1, 2);
 		return Task.CompletedTask;
@@ -50,37 +49,7 @@ public class when_adding_two_numbers : Specification
 }
 ```
 
-This is a contrived example, but the idea is to run the code you're observing in the `ObserveAsync` method and have one or more `Observation`s on what you observed. This way, when a test (`Observation`) fails, the language of the class and method (the scenario) should be granular enough to let you know exactly what failed.
-
-### Async Scenarios
-
-The `Specification` is async by default (e.g. the `ObserveAsync` method is expected to run async) since this is a brave new async world we live in. Since C# does not allow async constructors or async `Dispose` methods, if you need to do any async setup or teardown for the test, you should override `InitializeAsync` and/or `DisposeAsync`.
-
-```cs
-public class when_doing_some_async_thing : Specification
-{
-	string result;
-
-	protected override async Task InitializeAsync()
-	{
-		await myThing.DoAThingAsync();
-	}
-
-	protected override async Task ObserveAsync()
-	{
-		result = await myThing.DoTheThing();
-	}
-
-	[Observation]
-	public async Task should_return_correct_result()
-	{
-		string otherThing = await someOtherThing.DoAnotherThing();
-		result.ShouldEqual(otherThing);
-	}
-}
-```
-
-You should explicitly **avoid** implementing Xunit's `IAsyncLifetime` since that is what `Specification` does internally to do its magic. Use the hooks on the `Specification` class.
+This is a contrived example, but the idea is to run the code you're observing in the `Observe` method and have one or more `Observation`s on what you observed. This way, when a test (`Observation`) fails, the language of the class and method (the scenario) should be granular enough to let you know exactly what failed.
 
 ## Building Locally
 
