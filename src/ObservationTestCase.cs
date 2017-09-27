@@ -20,9 +20,9 @@ namespace Xunit.Extensions
             base.Initialize();
 
 	        IAttributeInfo observationAttribute = TestMethod.Method.GetCustomAttributes(typeof(ObservationAttribute)).First();
-			
-			DisplayName = $"{TestMethod.TestClass.Class.Name}.{TestMethod.Method.Name}";
-	        SkipReason = GetSkipReason(observationAttribute);
+
+			DisplayName = $"{TestMethod.TestClass.Class.Name}; it {TestMethod.Method.Name}".Replace('_', ' ');
+			SkipReason = GetSkipReason(observationAttribute);
 		}
 
 		/// <summary>
