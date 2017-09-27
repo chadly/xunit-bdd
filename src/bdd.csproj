@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <TargetFrameworks>net452;netstandard1.1</TargetFrameworks>
-    <Version>4.0.0</Version>
+    <Version>4.0.0-beta.1</Version>
+    <Title>Xunit BDD Extensions</Title>
     <Authors>Chad Lee</Authors>
     <RootNamespace>Xunit.Extensions</RootNamespace>
     <Description>Extends xUnit.Net with Behavior Driven Development style fixtures.</Description>
@@ -12,6 +13,12 @@
     <NeutralLanguage />
     <PackageProjectUrl>https://github.com/chadly/xUnit-BDD-Extensions</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/chadly/xUnit-BDD-Extensions/blob/master/LICENSE</PackageLicenseUrl>
+    <Copyright>Copyright © 2017 Chad Lee</Copyright>
+    <RepositoryUrl>https://github.com/chadly/xUnit-BDD-Extensions.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>bdd xunit behavior-driven-development should</PackageTags>
+    <PackageReleaseNotes>https://github.com/chadly/xUnit-BDD-Extensions/releases</PackageReleaseNotes>
+    <Company />
   </PropertyGroup>
 
   <ItemGroup>
