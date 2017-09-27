@@ -1,5 +1,5 @@
 using System;
-using Xunit;
+using System.Threading.Tasks;
 using Xunit.Extensions;
 
 namespace Xunit.Bdd.Test
@@ -17,10 +17,10 @@ namespace Xunit.Bdd.Test
 
 		private bool observedInBase = false;
 
-
-		public virtual void Observe()
+		public virtual Task ObserveAsync()
 		{
 			observedInBase = true;
+			return Task.FromResult(0);
 		}
 
 		[Observation]
@@ -52,9 +52,9 @@ namespace Xunit.Bdd.Test
 	{
 		protected bool observedInDerived = false;
 
-		public override void Observe()
+		public override async Task ObserveAsync()
 		{
-			base.Observe();
+			await base.ObserveAsync();
 			observedInDerived = true;
 		}
 
@@ -64,12 +64,13 @@ namespace Xunit.Bdd.Test
 			observedInDerived.ShouldBeTrue("Observe should be called in the derived class");
 		}
 	}
-	
+
 	[HandleExceptions]
 	public class behaves_like_an_ispecification_that_throws_during_setup : ISpecification
 	{
 		public Exception ThrownException { get; set; }
-		public void Observe()
+
+		public Task ObserveAsync()
 		{
 			throw new TestException();
 		}
@@ -85,7 +86,8 @@ namespace Xunit.Bdd.Test
 	public class behaves_like_an_ispecification_that_unexpectedly_throws_during_setup : ISpecification
 	{
 		public Exception ThrownException { get; set; }
-		public void Observe()
+
+		public Task ObserveAsync()
 		{
 			throw new TestException();
 		}

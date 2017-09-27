@@ -4,7 +4,7 @@
     <TargetFrameworks>net452;netstandard1.1</TargetFrameworks>
     <Version>4.0.0</Version>
     <Authors>Chad Lee</Authors>
-    <RootNamespace>Xunit</RootNamespace>
+    <RootNamespace>Xunit.Extensions</RootNamespace>
     <Description>Extends xUnit.Net with Behavior Driven Development style fixtures.</Description>
     <Product>xUnit.BDD</Product>
     <PackageId>xUnit.BDD</PackageId>

@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 namespace Xunit.Extensions
 {
 	/// <summary>
-	/// The base specification class
+	/// The base async specification class
 	/// </summary>
-	public abstract class Specification : ISpecification
+	public abstract class AsyncSpecification : ISpecification
 	{
 		/// <summary>
 		/// The exception that was thrown when Observe was run; null if no exception was thrown.
@@ -16,12 +16,6 @@ namespace Xunit.Extensions
 		/// <summary>
 		/// Performs an action, the outcome of which will be observed to validate the specification.
 		/// </summary>
-		public abstract void Observe();
-
-		Task ISpecification.ObserveAsync()
-		{
-			Observe();
-			return Task.FromResult(0);
-		}
+		public abstract Task ObserveAsync();
 	}
 }
