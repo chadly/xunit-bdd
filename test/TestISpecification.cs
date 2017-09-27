@@ -1,22 +1,24 @@
+using System;
 using Xunit;
 using Xunit.Extensions;
 
-[assembly: TestFramework("Xunit.Extensions.ObservationTestFramework", "Xunit.Bdd")]
-
 namespace Xunit.Bdd.Test
 {
-	public class behaves_like_a_specification : Specification
+	public class behaves_like_an_ispecification : ISpecification
 	{
+		public Exception ThrownException { get; set; }
+
 		protected static int constructionCount = 0;
 
-		public behaves_like_a_specification()
+		public behaves_like_an_ispecification()
 		{
 			constructionCount++;
 		}
-		
+
 		private bool observedInBase = false;
-		
-		public override void Observe()
+
+
+		public virtual void Observe()
 		{
 			observedInBase = true;
 		}
@@ -46,7 +48,7 @@ namespace Xunit.Bdd.Test
 		}
 	}
 
-	public class behaves_like_a_polymorphic_specification : behaves_like_a_specification
+	public class behaves_like_a_polymorphic_ispecification : behaves_like_an_ispecification
 	{
 		protected bool observedInDerived = false;
 
@@ -62,11 +64,12 @@ namespace Xunit.Bdd.Test
 			observedInDerived.ShouldBeTrue("Observe should be called in the derived class");
 		}
 	}
-
+	
 	[HandleExceptions]
-	public class behaves_like_a_specification_that_throws_during_setup : Specification
+	public class behaves_like_an_ispecification_that_throws_during_setup : ISpecification
 	{
-		public override void Observe()
+		public Exception ThrownException { get; set; }
+		public void Observe()
 		{
 			throw new TestException();
 		}
@@ -79,9 +82,10 @@ namespace Xunit.Bdd.Test
 		}
 	}
 
-	public class behaves_like_a_specification_that_unexpectedly_throws_during_setup : Specification
+	public class behaves_like_an_ispecification_that_unexpectedly_throws_during_setup : ISpecification
 	{
-		public override void Observe()
+		public Exception ThrownException { get; set; }
+		public void Observe()
 		{
 			throw new TestException();
 		}
@@ -96,32 +100,6 @@ namespace Xunit.Bdd.Test
 		public void should_still_be_inconclusive_even_if_skipped()
 		{
 			// This test will have an inconclusive result because of the exception thrown in Observe()
-		}
-	}
-
-	public class behaves_like_a_base_specification_that_doesnt_throw : Specification
-	{
-		public override void Observe()
-		{ }
-
-		[Observation]
-		public void should_run_test()
-		{ }
-	}
-
-	[HandleExceptions]
-	public class behaves_like_a_derived_specification_that_throws : behaves_like_a_base_specification_that_doesnt_throw
-	{
-		public override void Observe()
-		{
-			throw new TestException();
-		}
-		
-		[Observation]
-		public void should_handle_exception()
-		{
-			ThrownException.ShouldNotBeNull();
-			ThrownException.ShouldBeType<TestException>();
 		}
 	}
 }
