@@ -16,6 +16,11 @@ Install via [nuget](https://www.nuget.org/packages/xUnit.BDD/)
 dotnet add package xUnit.BDD
 ```
 
+* [Write a Scenario](#write-a-scenario)
+* [Async Tests](#async-tests)
+* [Handling Exceptions](#handling-exceptions)
+* [Shared Context](#shared-context)
+
 ### Write a Scenario
 
 ```cs
