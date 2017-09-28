@@ -90,7 +90,7 @@ public class when_making_magic_numbers : AsyncSpecification
 }
 ```
 
-If you have some async setup/teardown that also needs to run with the test, you can use [Xunit's `IAsyncLifetime`](https://github.com/xunit/xunit/blob/master/src/xunit.core/IAsyncLifetime.cs):
+If you have some async setup/teardown that also needs to run with the test, you can override `InitializeAsync` and/or `DisposeAsync`:
 
 ```cs
 using Xunit.Extensions;

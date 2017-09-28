@@ -3,7 +3,7 @@ using Xunit.Extensions;
 
 namespace Xunit.Bdd.Test
 {
-	public class behaves_like_an_async_specification : AsyncSpecification, IAsyncLifetime
+	public class behaves_like_an_async_specification : AsyncSpecification
 	{
 		protected static int constructionCount = 0;
 		protected static int initCount = 0;
@@ -16,13 +16,13 @@ namespace Xunit.Bdd.Test
 			constructionCount++;
 		}
 
-		public Task InitializeAsync()
+		public override Task InitializeAsync()
 		{
 			initCount++;
 			return Task.CompletedTask;
 		}
 
-		public Task DisposeAsync()
+		public override Task DisposeAsync()
 		{
 			disposeCount++;
 			return Task.CompletedTask;
