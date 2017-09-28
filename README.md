@@ -120,6 +120,14 @@ public class when_doing_more_stuff : AsyncSpecification, IAsyncLifetime
 }
 ```
 
+### Shared Context
+
+When writing test scenarios like this, you "observe" one thing in the `Observe` method and make one or more `Observation`s on the results. Due to this, the test framework overrides [Xunit's default handling of shared test context](https://xunit.github.io/docs/shared-context.html). Instead of creating a new instance of the class for each `Observation` and rerunning the test setup & `Observe` method, the test harness will create the class once, run the setup & `Observe` once, and then run all of the `Observation`s in sequence.
+
+In other words, it treats all `ISpecification` tests as [class fixtures](https://xunit.github.io/docs/shared-context.html#class-fixture) (e.g. shared object instance across tests in a single class).
+
+If you write BDD scenarios as prescribed, this should make no difference to you. It is simply a performance optimization that you should be aware of.
+
 ## Building Locally
 
 After cloning, run:
