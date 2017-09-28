@@ -42,7 +42,6 @@ namespace Xunit.Extensions
 			}
 
 			var asynclife = specification as IAsyncLifetime;
-
 			if (asynclife != null)
 				await timer.AggregateAsync(asynclife.InitializeAsync);
 
@@ -60,10 +59,8 @@ namespace Xunit.Extensions
 			}
 
 			await Aggregator.RunAsync(ObserveAndCatchIfSpecified);
-			if (Aggregator.HasExceptions)
-				return FailedSummary;
 
-			var result = await new ObservationTestClassRunner(specification, testClass, @class, testCases, diagnosticMessageSink, MessageBus, TestCaseOrderer, new ExceptionAggregator(Aggregator), CancellationTokenSource).RunAsync();
+            var result = await new ObservationTestClassRunner(specification, testClass, @class, testCases, diagnosticMessageSink, MessageBus, TestCaseOrderer, Aggregator.HasExceptions, new ExceptionAggregator(Aggregator), CancellationTokenSource).RunAsync();
 
 			if (asynclife != null)
 				await timer.AggregateAsync(asynclife.DisposeAsync);
