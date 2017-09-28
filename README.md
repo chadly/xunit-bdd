@@ -19,7 +19,7 @@ dotnet add package xUnit.BDD
 ### Write a Scenario
 
 ```cs
-using Xunit;
+using Xunit.Extensions;
 
 public class Calculator
 {
@@ -119,6 +119,56 @@ public class when_doing_more_stuff : AsyncSpecification, IAsyncLifetime
 	}
 }
 ```
+
+### Handling Exceptions
+
+If you have a method under test that throws an exception, you can make use of the `HandleExceptionsAttribute` to make assertions on it:
+
+```cs
+using Xunit.Extensions;
+
+public class Calculator
+{
+	public int Add(int x, int y)
+	{
+		if (x == 69)
+			throw new ArgumentException("inappropriate");
+
+		return x + y;
+	}
+}
+
+[HandleExceptions]
+public class when_adding_an_inappropriate_number : Specification
+{
+	readonly Calculator calc;
+	int result;
+
+	public when_adding_an_inappropriate_number()
+	{
+		calc = new Calculator();
+	}
+
+	public override void Observe()
+	{
+		result = calc.Add(69, 1);
+	}
+
+	[Observation]
+	public void should_not_return_any_result()
+	{
+		result.ShouldEqual(0);
+	}
+
+	[Observation]
+	public void should_throw()
+	{
+		ThrownException.ShouldBeType<ArgumentException>().Message.ShouldEqual("inappropriate");
+	}
+}
+```
+
+The `HandleExceptionsAttribute` will cause the test harness to handle any exceptions thrown by the `Observe` method. You can then make assertions on the thrown exception via the `ThrownException` property. If you leave off the `HandleExceptions` on the test class, it will not handle any exceptions from `Observe`. Therefore, you should only add the attribute if you are expecting an exception so as not to hide test failures.
 
 ### Shared Context
 
