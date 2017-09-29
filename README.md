@@ -26,6 +26,8 @@ dotnet add package xUnit.BDD
 ```cs
 using Xunit.Extensions;
 
+[assembly: TestFramework("Xunit.Extensions.ObservationTestFramework", "Xunit.Bdd")]
+
 public class Calculator
 {
 	public int Add(int x, int y) => x + y;
