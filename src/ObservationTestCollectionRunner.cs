@@ -38,11 +38,14 @@ namespace Xunit.Extensions
 
 			Aggregator.Run(() => testClassInstance = Activator.CreateInstance(testClass.Class.ToRuntimeType()));
 
+			if (Aggregator.HasExceptions)
+				return FailEntireClass(testCases, timer);
+
 			var specification = testClassInstance as ISpecification;
 			if (specification == null)
 			{
 				Aggregator.Add(new InvalidOperationException($"Test class {testClass.Class.Name} cannot be static, and must implement ISpecification."));
-				return FailedSummary;
+				return FailEntireClass(testCases, timer);
 			}
 
 			var asynclife = specification as IAsyncLifetime;
@@ -63,8 +66,10 @@ namespace Xunit.Extensions
 			}
 
 			await Aggregator.RunAsync(ObserveAndCatchIfSpecified);
+			if (Aggregator.HasExceptions)
+				return FailEntireClass(testCases, timer);
 
-            var result = await new ObservationTestClassRunner(specification, testClass, @class, testCases, diagnosticMessageSink, MessageBus, TestCaseOrderer, Aggregator.HasExceptions, new ExceptionAggregator(Aggregator), CancellationTokenSource).RunAsync();
+			var result = await new ObservationTestClassRunner(specification, testClass, @class, testCases, diagnosticMessageSink, MessageBus, TestCaseOrderer, new ExceptionAggregator(Aggregator), CancellationTokenSource).RunAsync();
 
 			if (asynclife != null)
 				await timer.AggregateAsync(asynclife.DisposeAsync);
@@ -73,6 +78,17 @@ namespace Xunit.Extensions
 				timer.Aggregate(disposable.Dispose);
 
 			return result;
+		}
+
+		private RunSummary FailEntireClass(IEnumerable<ObservationTestCase> testCases, ExecutionTimer timer)
+		{
+			foreach (var testCase in testCases)
+			{
+				MessageBus.QueueMessage(new TestFailed(new ObservationTest(testCase, testCase.DisplayName), timer.Total,
+					"Exception was thrown in class constructor", Aggregator.ToException()));
+			}
+			int count = testCases.Count();
+			return new RunSummary { Failed = count, Total = count };
 		}
 
 		private static bool ShouldHandleException(Type type)

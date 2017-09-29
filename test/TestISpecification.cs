@@ -93,15 +93,35 @@ namespace Xunit.Bdd.Test
 		}
 
 		[Observation]
-		public void should_be_inconclusive()
+		public void should_fail()
 		{
 			// This test will have an inconclusive result because of the exception thrown in Observe()
 		}
 
 		[Observation(Skip = "YOU SHOULD NEVER SEE THIS AS A TEST RESULT")] // The runner can't reach the point where it skips a test if its setup can't be run first.
-		public void should_still_be_inconclusive_even_if_skipped()
+		public void should_still_fail_even_if_skipped()
 		{
 			// This test will have an inconclusive result because of the exception thrown in Observe()
 		}
+	}
+
+	public class behaves_like_an_ispecification_that_unexpectedly_throws_during_construction : ISpecification
+	{
+		public Exception ThrownException { get; set; }
+
+		public behaves_like_an_ispecification_that_unexpectedly_throws_during_construction()
+		{
+			throw new TestException();
+		}
+
+		public Task ObserveAsync() => Task.CompletedTask;
+
+		[Observation]
+		public void should_fail()
+		{ }
+
+		[Observation(Skip = "YOU SHOULD NEVER SEE THIS MESSAGE")] // The runner can't reach the point where it skips a test if its setup can't be run first.
+		public void should_still_fail_even_if_skipped()
+		{ }
 	}
 }
