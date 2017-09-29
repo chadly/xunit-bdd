@@ -120,4 +120,23 @@ namespace Xunit.Bdd.Test
 			ThrownException.ShouldBeType<TestException>();
 		}
 	}
+
+	public class behaves_like_a_specification_that_unexpectedly_throws_during_construction : Specification
+	{
+		public behaves_like_a_specification_that_unexpectedly_throws_during_construction()
+		{
+			throw new TestException();
+		}
+
+		public override void Observe()
+		{ }
+
+		[Observation]
+		public void should_fail()
+		{ }
+
+		[Observation(Skip = "YOU SHOULD NEVER SEE THIS MESSAGE")] // The runner can't reach the point where it skips a test if its setup can't be run first.
+		public void should_still_fail_even_if_skipped()
+		{ }
+	}
 }

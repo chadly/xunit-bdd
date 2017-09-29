@@ -34,7 +34,11 @@ namespace Xunit.Extensions
 																	IEnumerable<ObservationTestCase> testCases)
 		{
 			var timer = new ExecutionTimer();
-			var specification = Activator.CreateInstance(testClass.Class.ToRuntimeType()) as ISpecification;
+			object testClassInstance = null;
+
+			Aggregator.Run(() => testClassInstance = Activator.CreateInstance(testClass.Class.ToRuntimeType()));
+
+			var specification = testClassInstance as ISpecification;
 			if (specification == null)
 			{
 				Aggregator.Add(new InvalidOperationException($"Test class {testClass.Class.Name} cannot be static, and must implement ISpecification."));
