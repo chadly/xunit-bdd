@@ -39,13 +39,13 @@ namespace Xunit.Extensions
 			Aggregator.Run(() => testClassInstance = Activator.CreateInstance(testClass.Class.ToRuntimeType()));
 
 			if (Aggregator.HasExceptions)
-				return FailEntireClass(testCases, timer);
+				return FailEntireClass(testCases, timer, "Exception was thrown in class constructor");
 
 			var specification = testClassInstance as ISpecification;
 			if (specification == null)
 			{
 				Aggregator.Add(new InvalidOperationException($"Test class {testClass.Class.Name} cannot be static, and must implement ISpecification."));
-				return FailEntireClass(testCases, timer);
+				return FailEntireClass(testCases, timer, "[Observation] tests must be on an instantiable class, which must implement ISpecification.");
 			}
 
 			var asynclife = specification as IAsyncLifetime;
@@ -67,7 +67,7 @@ namespace Xunit.Extensions
 
 			await Aggregator.RunAsync(ObserveAndCatchIfSpecified);
 			if (Aggregator.HasExceptions)
-				return FailEntireClass(testCases, timer);
+				return FailEntireClass(testCases, timer, "Observe() threw an exception that the Specification did not expect");
 
 			var result = await new ObservationTestClassRunner(specification, testClass, @class, testCases, diagnosticMessageSink, MessageBus, TestCaseOrderer, new ExceptionAggregator(Aggregator), CancellationTokenSource).RunAsync();
 
@@ -80,15 +80,25 @@ namespace Xunit.Extensions
 			return result;
 		}
 
-		private RunSummary FailEntireClass(IEnumerable<ObservationTestCase> testCases, ExecutionTimer timer)
+		private RunSummary FailEntireClass(IEnumerable<ObservationTestCase> testCases, ExecutionTimer timer, string failureReason)
 		{
+			RunSummary summary = new RunSummary { Time = timer.Total };
 			foreach (var testCase in testCases)
 			{
-				MessageBus.QueueMessage(new TestFailed(new ObservationTest(testCase, testCase.DisplayName), timer.Total,
-					"Exception was thrown in class constructor", Aggregator.ToException()));
+				if (testCase.SkipReason != null)
+				{
+					MessageBus.QueueMessage(new TestSkipped(new ObservationTest(testCase, testCase.DisplayName), testCase.SkipReason));
+					summary.Skipped++;
+				}
+				else
+				{
+					MessageBus.QueueMessage(new TestFailed(new ObservationTest(testCase, testCase.DisplayName), timer.Total,
+						failureReason, Aggregator.ToException()));
+					summary.Failed++;
+				}
+				summary.Total++;
 			}
-			int count = testCases.Count();
-			return new RunSummary { Failed = count, Total = count };
+			return summary;
 		}
 
 		private static bool ShouldHandleException(Type type)
