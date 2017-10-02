@@ -90,8 +90,8 @@ namespace Xunit.Bdd.Test
 		public void should_fail()
 		{ }
 
-		[Observation(Skip = "YOU SHOULD NEVER SEE THIS MESSAGE")] // The runner can't reach the point where it skips a test if its setup can't be run first.
-		public void should_still_fail_even_if_skipped()
+		[Observation(Skip = "This test should never fail")]
+		public void should_skip_even_if_Observe_throws()
 		{ }
 	}
 
@@ -135,8 +135,8 @@ namespace Xunit.Bdd.Test
 		public void should_fail()
 		{ }
 
-		[Observation(Skip = "YOU SHOULD NEVER SEE THIS MESSAGE")] // The runner can't reach the point where it skips a test if its setup can't be run first.
-		public void should_still_fail_even_if_skipped()
+		[Observation(Skip = "This test should never fail")]
+		public void should_skip_even_if_constructor_throws()
 		{ }
 	}
 }
