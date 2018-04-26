@@ -40,7 +40,7 @@ public class when_adding_two_numbers : Specification
 		calc = new Calculator();
 	}
 
-	public override void Observe()
+	protected override void Observe()
 	{
 		result = calc.Add(1, 2);
 	}
@@ -81,7 +81,7 @@ public class when_making_magic_numbers : AsyncSpecification
 		calc = new Calculator();
 	}
 
-	public override async Task ObserveAsync()
+	protected override async Task ObserveAsync()
 	{
 		result = await calc.CalculateMagicNumber(1, 2);
 	}
@@ -106,7 +106,7 @@ public class when_doing_more_stuff : AsyncSpecification, IAsyncLifetime
 		await DoSomething();
 	}
 
-	public override async Task ObserveAsync()
+	protected override async Task ObserveAsync()
 	{
 		result = await calc.CalculateMagicNumber(1, 2);
 	}
@@ -153,7 +153,7 @@ public class when_adding_an_inappropriate_number : Specification
 		calc = new Calculator();
 	}
 
-	public override void Observe()
+	protected override void Observe()
 	{
 		result = calc.Add(69, 1);
 	}
