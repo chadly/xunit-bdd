@@ -4,7 +4,7 @@ Extends xUnit.Net with Behavior Driven Development style fixtures.
 
 Some of the design goals include:
  * Use natural C# constructs to control things such as BDD contexts and concerns. For example, the context of the specification is defined in the class constructor and the concern for the fixture is defined by its namespace.
- * Don't force me to inherit from any base class to get BDD style tests working. There is an interface `ISpecification` that one can implement to accomplish this. A `Specification` & `AsyncSpecification` base classes are also provided for convenience.
+ * Async tests are a first class citizen.
 
 See here for a [full introduction](https://www.chadly.net/bdd-with-xunit-net/)
 
@@ -19,14 +19,11 @@ dotnet add package xUnit.BDD
 * [Write a Scenario](#write-a-scenario)
 * [Async Tests](#async-tests)
 * [Handling Exceptions](#handling-exceptions)
-* [Shared Context](#shared-context)
 
 ### Write a Scenario
 
 ```cs
 using Xunit.Extensions;
-
-[assembly: TestFramework("Xunit.Extensions.ObservationTestFramework", "Xunit.Bdd")]
 
 public class Calculator
 {
@@ -176,14 +173,6 @@ public class when_adding_an_inappropriate_number : Specification
 ```
 
 The `HandleExceptionsAttribute` will cause the test harness to handle any exceptions thrown by the `Observe` method. You can then make assertions on the thrown exception via the `ThrownException` property. If you leave off the `HandleExceptions` on the test class, it will not handle any exceptions from `Observe`. Therefore, you should only add the attribute if you are expecting an exception so as not to hide test failures.
-
-### Shared Context
-
-When writing test scenarios like this, you "observe" one thing in the `Observe` method and make one or more `Observation`s on the results. Due to this, the test framework overrides [Xunit's default handling of shared test context](https://xunit.github.io/docs/shared-context.html). Instead of creating a new instance of the class for each `Observation` and rerunning the test setup & `Observe` method, the test harness will create the class once, run the setup & `Observe` once, and then run all of the `Observation`s in sequence.
-
-In other words, it treats all `ISpecification` tests as [class fixtures](https://xunit.github.io/docs/shared-context.html#class-fixture) (e.g. shared object instance across tests in a single class).
-
-If you write BDD scenarios as prescribed, this should make no difference to you. It is simply a performance optimization that you should be aware of.
 
 ## Building Locally
 

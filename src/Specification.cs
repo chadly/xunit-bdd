@@ -1,27 +1,24 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Xunit.Extensions
 {
 	/// <summary>
-	/// The base specification class
+	/// The base specification class for non-async scenarios
 	/// </summary>
-	public abstract class Specification : ISpecification
+	public abstract class Specification : AsyncSpecification
 	{
-		/// <summary>
-		/// The exception that was thrown when Observe was run; null if no exception was thrown.
-		/// </summary>
-		public Exception ThrownException { get; set; }
+		public sealed override Task InitializeAsync() => base.InitializeAsync();
+		public sealed override Task DisposeAsync() => base.DisposeAsync();
 
-		/// <summary>
-		/// Performs an action, the outcome of which will be observed to validate the specification.
-		/// </summary>
-		public abstract void Observe();
-
-		Task ISpecification.ObserveAsync()
+		public sealed override Task ObserveAsync()
 		{
 			Observe();
-			return Task.FromResult(0);
+			return CommonTasks.Completed;
 		}
+
+		/// <summary>
+		/// Performs the action to observe the outcome of to validate the specification.
+		/// </summary>
+		public abstract void Observe();
 	}
 }

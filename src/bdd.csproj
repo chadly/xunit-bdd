@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net452;netstandard1.1</TargetFrameworks>
-    <Version>4.0.0-beta.2</Version>
+    <Version>1.0.0</Version>
     <Title>Xunit BDD Extensions</Title>
     <Authors>Chad Lee</Authors>
     <RootNamespace>Xunit.Extensions</RootNamespace>
@@ -11,20 +11,19 @@
     <PackageId>xUnit.BDD</PackageId>
     <AssemblyName>Xunit.Bdd</AssemblyName>
     <NeutralLanguage />
-    <PackageProjectUrl>https://github.com/chadly/xUnit-BDD-Extensions</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/chadly/xUnit-BDD-Extensions/blob/master/LICENSE</PackageLicenseUrl>
-    <Copyright>Copyright © 2017 Chad Lee</Copyright>
-    <RepositoryUrl>https://github.com/chadly/xUnit-BDD-Extensions.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/civicsource/xunit-bdd</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/civicsource/xunit-bdd/blob/master/LICENSE</PackageLicenseUrl>
+    <Copyright>Copyright © 2018 Archon Information Systems, LLC.</Copyright>
+    <RepositoryUrl>https://github.com/civicsource/xunit-bdd.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>bdd xunit behavior-driven-development should</PackageTags>
-    <PackageReleaseNotes>https://github.com/chadly/xUnit-BDD-Extensions/releases</PackageReleaseNotes>
+    <PackageReleaseNotes>https://github.com/civicsource/xunit-bdd/releases</PackageReleaseNotes>
     <Company />
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="xunit.assert" Version="2.2.0" />
     <PackageReference Include="xunit.extensibility.core" Version="2.2.0" />
-    <PackageReference Include="xunit.extensibility.execution" Version="2.2.0" />
   </ItemGroup>
 
 </Project>
