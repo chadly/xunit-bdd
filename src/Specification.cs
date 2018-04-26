@@ -10,7 +10,7 @@ namespace Xunit.Extensions
 		public sealed override Task InitializeAsync() => base.InitializeAsync();
 		public sealed override Task DisposeAsync() => base.DisposeAsync();
 
-		public sealed override Task ObserveAsync()
+		protected sealed override Task ObserveAsync()
 		{
 			Observe();
 			return CommonTasks.Completed;
@@ -19,6 +19,6 @@ namespace Xunit.Extensions
 		/// <summary>
 		/// Performs the action to observe the outcome of to validate the specification.
 		/// </summary>
-		public abstract void Observe();
+		protected abstract void Observe();
 	}
 }

@@ -29,7 +29,7 @@ namespace Xunit.Extensions
 		/// <summary>
 		/// Performs the action to observe the outcome of to validate the specification.
 		/// </summary>
-		public abstract Task ObserveAsync();
+		protected abstract Task ObserveAsync();
 
 		/// <summary>
 		/// Cleanup the test class all async-like.

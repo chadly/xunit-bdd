@@ -7,7 +7,7 @@ namespace Xunit.Extensions.Test
 	{
 		bool observedInBase = false;
 
-		public override Task ObserveAsync()
+		protected override Task ObserveAsync()
 		{
 			observedInBase = true;
 			return Task.CompletedTask;
@@ -24,7 +24,7 @@ namespace Xunit.Extensions.Test
 	{
 		bool observedInBase = false;
 
-		public override void Observe()
+		protected override void Observe()
 		{
 			observedInBase = true;
 		}
@@ -40,7 +40,7 @@ namespace Xunit.Extensions.Test
 	{
 		protected bool observedInDerived = false;
 
-		public override async Task ObserveAsync()
+		protected override async Task ObserveAsync()
 		{
 			await base.ObserveAsync();
 			observedInDerived = true;
@@ -58,7 +58,7 @@ namespace Xunit.Extensions.Test
 	[HandleExceptions]
 	public class behaves_like_a_specification_that_throws_when_observed : AsyncSpecification
 	{
-		public override Task ObserveAsync()
+		protected override Task ObserveAsync()
 		{
 			throw new TestException();
 		}
@@ -73,7 +73,7 @@ namespace Xunit.Extensions.Test
 
 	public class behaves_like_a_specification_that_unexpectedly_throws_when_observed : AsyncSpecification
 	{
-		public override Task ObserveAsync()
+		protected override Task ObserveAsync()
 		{
 			throw new TestException();
 		}
