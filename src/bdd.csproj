@@ -18,7 +18,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>bdd xunit behavior-driven-development should</PackageTags>
     <PackageReleaseNotes>https://github.com/civicsource/xunit-bdd/releases</PackageReleaseNotes>
-    <Company />
+    <Company>Archon Information Systems, LLC</Company>
   </PropertyGroup>
 
   <ItemGroup>
