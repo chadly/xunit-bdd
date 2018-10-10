@@ -24,7 +24,7 @@ namespace Xunit.Extensions
 		/// <summary>
 		/// Initialize the test class all async-like.
 		/// </summary>
-		public virtual Task InitializeAsync() => CommonTasks.Completed;
+		protected virtual Task InitializeAsync() => CommonTasks.Completed;
 
 		/// <summary>
 		/// Performs the action to observe the outcome of to validate the specification.
@@ -34,7 +34,9 @@ namespace Xunit.Extensions
 		/// <summary>
 		/// Cleanup the test class all async-like.
 		/// </summary>
-		public virtual Task DisposeAsync() => CommonTasks.Completed;
+		protected virtual Task DisposeAsync() => CommonTasks.Completed;
+
+		Task IAsyncLifetime.DisposeAsync() => DisposeAsync();
 
 		async Task IAsyncLifetime.InitializeAsync()
 		{

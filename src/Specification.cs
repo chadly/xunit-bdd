@@ -7,8 +7,8 @@ namespace Xunit.Extensions
 	/// </summary>
 	public abstract class Specification : AsyncSpecification
 	{
-		public sealed override Task InitializeAsync() => base.InitializeAsync();
-		public sealed override Task DisposeAsync() => base.DisposeAsync();
+		protected sealed override Task InitializeAsync() => base.InitializeAsync();
+		protected sealed override Task DisposeAsync() => base.DisposeAsync();
 
 		protected sealed override Task ObserveAsync()
 		{
